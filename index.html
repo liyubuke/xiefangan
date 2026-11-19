@@ -84,10 +84,13 @@
   html[data-os="mac"] [data-os="win"], html[data-os="win"] [data-os="mac"] { display: none; }
   .os-label { display: inline-block; font-size: 12px; font-weight: 600; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 6px; margin-right: 6px; vertical-align: 2px; }
   html[data-os] .os-label { display: none; }
+  .welcome { border: 1px solid var(--ok); border-left-width: 4px; border-radius: 8px; padding: 12px 14px; margin: 0 0 16px; }
+  .welcome b { color: var(--ok); }
 </style>
 </head>
 <body>
 <div class="wrap">
+  <div class="welcome" id="welcome" hidden><b>✓ 插件已经装好了，还差最后一步：</b>按下面的说明复制一行命令运行一次（约 30 秒），之后在飞书 / i讯飞文档里选中文字就能用。</div>
   <h1>写方案 · 安装本机服务</h1>
   <p class="lead">写方案是一个 Edge 插件：在飞书 / i讯飞文档里选中文字，交给你电脑上的 Claude Code、Codex 或 WorkBuddy，结合全文、表格和图片给出可直接复制的改法。插件需要一个只在本机运行的小服务来调用这些工具，一行命令，约 30 秒装好（支持 macOS 和 Windows）。</p>
 
@@ -228,6 +231,8 @@
       setTimeout(function () { b.textContent = '复制命令'; b.classList.remove('done'); }, 2000);
     };
   });
+// 从插件「刚安装」跳过来时（?from=install），顶部显示欢迎提示
+try { if (new URLSearchParams(location.search).get('from') === 'install') document.getElementById('welcome').hidden = false; } catch (e) {}
 </script>
 </body>
 </html>
