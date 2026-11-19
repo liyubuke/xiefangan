@@ -183,7 +183,7 @@ function Install-XieFangAn {
 
         $CLAUDE = Find-App 'claude' @((Join-Path $UP '.local\bin\claude.exe'), (Join-Path $AD 'npm\claude.cmd'))
         $CODEX = Find-App 'codex' @((Join-Path $AD 'npm\codex.cmd'), (Join-Path $UP '.local\bin\codex.exe'))
-        $WB_FULL = Find-App 'codebuddy' @((Join-Path $UP '.local\bin\codebuddy.exe'), (Join-Path $AD 'npm\codebuddy.cmd'))
+        $WB_FULL = Find-App 'codebuddy' @((Join-Path $LAD 'codebuddy\bin\codebuddy.exe'), (Join-Path $UP '.local\bin\codebuddy.exe'), (Join-Path $AD 'npm\codebuddy.cmd'))
         $WB_APP = ''
         $roots = @()
         foreach ($pf in @($env:ProgramW6432, $env:ProgramFiles)) { if ($pf) { $roots += (Join-Path $pf 'WorkBuddy') } }
@@ -313,7 +313,7 @@ function Install-XieFangAn {
         $envs = [ordered]@{ GZD_PORT = $PORT }
         if ($CLAUDE) { $envs['GZD_CLAUDE'] = $CLAUDE }
         if ($CODEX) { $envs['GZD_CODEX'] = $CODEX }
-        if ($WB_CLI) { $envs['GZD_WB_CLI'] = $WB_CLI }
+        if ($WB_FULL) { $envs['GZD_WB_CLI'] = $WB_FULL }
         if ($WB_APP) { $envs['GZD_WB_APP_CLI'] = $WB_APP }
         if ($WB_NODE) { $envs['GZD_WB_NODE'] = $WB_NODE }
         $pathAdd = @()
