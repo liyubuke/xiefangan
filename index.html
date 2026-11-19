@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>写方案 · 安装本机服务</title>
-<meta name="description" content="写方案 Edge 插件的本机服务安装说明：一行命令，约 30 秒装好。">
+<meta name="description" content="写方案 Edge 插件的本机服务安装说明（macOS / Windows）：一行命令，约 30 秒装好。">
 <style>
   :root {
     --bg: #ffffff; --panel: #f5f6f7; --line: #e4e6eb; --text: #1f2329; --muted: #646a73;
@@ -72,30 +72,66 @@
     border: 1px solid var(--accent); text-decoration: none;
   }
   footer { margin-top: 40px; color: var(--muted); font-size: 14px; }
+  /* 系统切换：没有 JS 时两个系统的内容都显示；有 JS 时按 html[data-os] 只显示当前系统 */
+  .tabs { display: flex; gap: 4px; margin: 0 0 16px; padding: 4px; background: var(--panel); border-radius: 10px; width: fit-content; max-width: 100%; }
+  .tabs[hidden] { display: none; }
+  .tabs button {
+    background: transparent; border-color: transparent; color: var(--muted); padding: 6px 18px; font-weight: 600;
+  }
+  .tabs button:hover { background: var(--bg); border-color: transparent; color: var(--text); }
+  .tabs button[aria-selected="true"] { background: var(--bg); color: var(--accent); border-color: var(--line); }
+  .tabs .here { font-weight: 400; font-size: 12px; margin-left: 4px; }
+  html[data-os="mac"] [data-os="win"], html[data-os="win"] [data-os="mac"] { display: none; }
+  .os-label { display: inline-block; font-size: 12px; font-weight: 600; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 6px; margin-right: 6px; vertical-align: 2px; }
+  html[data-os] .os-label { display: none; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>写方案 · 安装本机服务</h1>
-  <p class="lead">写方案是一个 Edge 插件：在飞书 / i讯飞文档里选中文字，交给你电脑上的 Claude Code、Codex 或 WorkBuddy，结合全文、表格和图片给出可直接复制的改法。插件需要一个只在本机运行的小服务来调用这些工具，一行命令，约 30 秒装好（目前支持 macOS）。</p>
+  <p class="lead">写方案是一个 Edge 插件：在飞书 / i讯飞文档里选中文字，交给你电脑上的 Claude Code、Codex 或 WorkBuddy，结合全文、表格和图片给出可直接复制的改法。插件需要一个只在本机运行的小服务来调用这些工具，一行命令，约 30 秒装好（支持 macOS 和 Windows）。</p>
 
-  <div class="cmdbox">
-    <code id="cmd">curl -fsSL https://liyubuke.github.io/xiefangan/install.sh | bash</code>
-    <button id="copy" type="button">复制命令</button>
+  <div class="tabs" role="tablist" aria-label="选择你的系统" hidden>
+    <button type="button" role="tab" data-tab="mac" aria-selected="true">macOS<span class="here" data-here="mac"></span></button>
+    <button type="button" role="tab" data-tab="win" aria-selected="false">Windows<span class="here" data-here="win"></span></button>
   </div>
-  <p class="note">前提：已装好 Claude Code、Codex、WorkBuddy 中至少一个，并能在终端里正常使用。</p>
 
-  <h2>三步装好</h2>
-  <ol class="steps">
-    <li>打开「终端」：按 <kbd>⌘</kbd> + <kbd>空格</kbd>，输入「终端」后回车。</li>
-    <li>点上面「复制命令」，在终端窗口里粘贴（<kbd>⌘</kbd> + <kbd>V</kbd>），按回车。</li>
-    <li>看到「✓ 装好了，回到 Edge 侧边栏即可使用」后，回到 Edge 打开写方案侧边栏，右上角圆点变绿就能用了。</li>
-  </ol>
+  <section data-os="mac">
+    <h2 style="margin-top:0"><span class="os-label">macOS</span>在「终端」里运行</h2>
+    <div class="cmdbox">
+      <code id="cmd-mac">curl -fsSL https://liyubuke.github.io/xiefangan/install.sh | bash</code>
+      <button class="copy" data-target="cmd-mac" data-key="⌘C" type="button">复制命令</button>
+    </div>
+    <p class="note">前提：已装好 Claude Code、Codex、WorkBuddy 中至少一个，并能在终端里正常使用。</p>
+
+    <h2>三步装好</h2>
+    <ol class="steps">
+      <li>打开「终端」：按 <kbd>⌘</kbd> + <kbd>空格</kbd>，输入「终端」后回车。</li>
+      <li>点上面「复制命令」，在终端窗口里粘贴（<kbd>⌘</kbd> + <kbd>V</kbd>），按回车。</li>
+      <li>看到「✓ 装好了，回到 Edge 侧边栏即可使用」后，回到 Edge 打开写方案侧边栏，右上角圆点变绿就能用了。</li>
+    </ol>
+  </section>
+
+  <section data-os="win">
+    <h2 style="margin-top:0"><span class="os-label">Windows</span>在「Windows PowerShell」里运行</h2>
+    <div class="cmdbox">
+      <code id="cmd-win">irm https://liyubuke.github.io/xiefangan/install.ps1 | iex</code>
+      <button class="copy" data-target="cmd-win" data-key="Ctrl+C" type="button">复制命令</button>
+    </div>
+    <p class="note">前提：Windows 10（1803 及以上）或 Windows 11；已装好 Claude Code、Codex、WorkBuddy 中至少一个。不需要管理员权限，也不用另装 Node.js（缺的话会自动下载便携版）。</p>
+
+    <h2>三步装好</h2>
+    <ol class="steps">
+      <li>打开 PowerShell：点「开始」菜单（或按 <kbd>Win</kbd> 键），输入「PowerShell」，点「Windows PowerShell」打开。<strong>不用</strong>选「以管理员身份运行」。</li>
+      <li>点上面「复制命令」，在 PowerShell 窗口里单击右键（或按 <kbd>Ctrl</kbd> + <kbd>V</kbd>）粘贴，按回车。</li>
+      <li>看到「√ 装好了，回到 Edge 侧边栏即可使用」后，回到 Edge 打开写方案侧边栏，右上角圆点变绿就能用了。</li>
+    </ol>
+  </section>
   <p>还没装插件？<a class="store" href="https://microsoftedge.microsoft.com/addons/detail/jjnopgdhcpnbmpoefhfolbhgdfpmgklc">去 Edge 应用商店安装写方案</a></p>
 
   <h2>常见问题</h2>
-  <details>
-    <summary>这个命令做了什么？</summary>
+  <details data-os="mac">
+    <summary><span class="os-label">macOS</span>这个命令做了什么？</summary>
     <ul>
       <li>把本机服务下载到 <code class="inline">~/Library/Application Support/XieFangAn</code>；</li>
       <li>注册一个登录后自动运行的后台服务（<code class="inline">com.xiefangan.bridge</code>），只监听本机 <code class="inline">127.0.0.1:19930</code>，外网和局域网都访问不到；</li>
@@ -103,16 +139,26 @@
     </ul>
     <p>可以先在浏览器里打开 <a href="install.sh">install.sh</a> 看完脚本内容再运行。可重复运行，重装不影响已有设置。</p>
   </details>
+  <details data-os="win">
+    <summary><span class="os-label">Windows</span>这个命令做了什么？</summary>
+    <ul>
+      <li>把本机服务下载到 <code class="inline">%LOCALAPPDATA%\XieFangAn</code>（日志在其中的 <code class="inline">logs\bridge.log</code>）；</li>
+      <li>电脑里没有 Node.js 18 以上时，从 npmmirror.com（不通再用 nodejs.org）下载官方便携版，校验后放在同一个目录里，不改系统设置；</li>
+      <li>在「启动」文件夹放一个 <code class="inline">XieFangAn.vbs</code>，登录后在后台（不弹窗口）运行服务，只监听本机 <code class="inline">127.0.0.1:19930</code>，外网和局域网都访问不到；</li>
+      <li>服务只接受写方案插件发来的请求，普通网页调不动它。不需要管理员权限。</li>
+    </ul>
+    <p>可以先在浏览器里打开 <a href="install.ps1">install.ps1</a> 看完脚本内容再运行（脚本里的中文提示按 base64 存放，避免 PowerShell 乱码）。可重复运行，重装不影响已有设置。</p>
+  </details>
   <details>
     <summary>我选中的文字会发到哪里？</summary>
     <p>插件 → 你电脑上的本机服务 → 你自己电脑上的 Claude Code / Codex / WorkBuddy。不经过写方案的任何服务器；各工具如何处理内容，以它们各自的服务条款为准。详见<a href="privacy.html">隐私政策</a>。</p>
   </details>
   <details>
     <summary>提示「一个都没找到」</summary>
-    <p>说明终端里找不到 <code class="inline">claude</code>、<code class="inline">codex</code> 命令，也没装 WorkBuddy。先装好其中一个，确认在终端里输入 <code class="inline">claude</code>（或 <code class="inline">codex</code>）能正常对话，再运行一次安装命令。</p>
+    <p>说明终端（Windows 上是 PowerShell）里找不到 <code class="inline">claude</code>、<code class="inline">codex</code> 命令，也没装 WorkBuddy。先装好其中一个，确认在终端里输入 <code class="inline">claude</code>（或 <code class="inline">codex</code>）能正常对话，再运行一次安装命令。Windows 上刚装完的工具，要关掉 PowerShell 窗口重新打开才认得到。</p>
   </details>
-  <details>
-    <summary>提示「没找到 Node.js 18 以上」</summary>
+  <details data-os="mac">
+    <summary><span class="os-label">macOS</span>提示「没找到 Node.js 18 以上」</summary>
     <p>到 <a href="https://nodejs.org" rel="noopener">nodejs.org</a> 下载 LTS 版安装，或在终端运行 <code class="inline">brew install node</code>，然后再运行一次安装命令。装了 WorkBuddy 的电脑会自动借用它自带的 Node.js。</p>
   </details>
   <details>
@@ -122,34 +168,66 @@
       <li>到 <code class="inline">edge://extensions/</code> 找到写方案，点「重新加载」；</li>
       <li>再运行一次安装命令；仍不行就看日志：</li>
     </ul>
-    <pre>tail -50 ~/Library/Logs/xiefangan-bridge.log</pre>
+    <pre data-os="mac">tail -50 ~/Library/Logs/xiefangan-bridge.log</pre>
+    <pre data-os="win">Get-Content "$env:LOCALAPPDATA\XieFangAn\logs\bridge.log" -Tail 50 -Encoding UTF8</pre>
+  </details>
+  <details data-os="win">
+    <summary><span class="os-label">Windows</span>怎么确认本机服务在运行？</summary>
+    <p>按 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Esc</kbd> 打开任务管理器，在「详细信息」里能看到 <code class="inline">node.exe</code>（还有一个后台的 <code class="inline">powershell.exe</code>，它负责服务意外退出后 3 秒内自动重启）。也可以在 PowerShell 里运行下面这行，有输出就说明在运行：</p>
+    <pre>Get-CimInstance Win32_Process -Filter "Name='node.exe'" | Where-Object CommandLine -like '*XieFangAn*' | Select-Object ProcessId, CommandLine</pre>
+    <p>重启电脑后服务会自动运行；如果没有，再运行一次安装命令即可。</p>
+  </details>
+  <details data-os="win">
+    <summary><span class="os-label">Windows</span>公司电脑的杀毒软件拦截了 / 运行命令后报错</summary>
+    <ul>
+      <li>杀毒软件（如 360、火绒、公司终端安全软件）可能拦截「从网上下载并运行脚本」，或拦截「启动」文件夹里新增的 <code class="inline">XieFangAn.vbs</code>。在杀毒软件的提示里选「允许」/「信任」，再运行一次安装命令；</li>
+      <li>拦截后没有提示的，到杀毒软件的「隔离区」/「信任区」把 <code class="inline">%LOCALAPPDATA%\XieFangAn</code> 和「启动」文件夹里的 <code class="inline">XieFangAn.vbs</code> 加入信任；</li>
+      <li>公司统一管理的电脑如果禁止运行脚本，请联系公司 IT 放行 PowerShell 脚本，或换一台电脑使用；</li>
+      <li>报错里有「端口 19930 被别的程序占用」：关掉占用它的程序（报错里写了程序名），再运行一次安装命令。</li>
+    </ul>
   </details>
   <details>
     <summary>Codex / WorkBuddy 提示没登录</summary>
     <p>插件会自动弹出登录页（WorkBuddy 会打开一个终端登录窗口），按提示登录后点「重试」。Codex 也可以在终端运行 <code class="inline">codex login</code>。</p>
   </details>
   <details>
-    <summary>支持 Windows 吗？</summary>
-    <p>暂时只支持 macOS。</p>
-  </details>
-  <details>
     <summary>怎么卸载？</summary>
-    <p>在终端运行下面这行（会停止并删除本机服务、日志和 <code class="inline">/tmp/xiefangan</code> 下的临时图片），再到 <code class="inline">edge://extensions/</code> 移除写方案插件：</p>
-    <pre>curl -fsSL https://liyubuke.github.io/xiefangan/uninstall.sh | bash</pre>
+    <p data-os="mac"><span class="os-label">macOS</span>在终端运行下面这行（会停止并删除本机服务、日志和 <code class="inline">/tmp/xiefangan</code> 下的临时图片），再到 <code class="inline">edge://extensions/</code> 移除写方案插件：</p>
+    <pre data-os="mac">curl -fsSL https://liyubuke.github.io/xiefangan/uninstall.sh | bash</pre>
+    <p data-os="win"><span class="os-label">Windows</span>在 Windows PowerShell 运行下面这行（会停止并删除本机服务、<code class="inline">%LOCALAPPDATA%\XieFangAn</code>（含日志和自动下载的 Node.js）、「启动」文件夹里的 <code class="inline">XieFangAn.vbs</code>，以及 <code class="inline">%TEMP%\xiefangan</code>、<code class="inline">%TEMP%\xfa-login</code> 下的临时文件），再到 <code class="inline">edge://extensions/</code> 移除写方案插件：</p>
+    <pre data-os="win">irm https://liyubuke.github.io/xiefangan/uninstall.ps1 | iex</pre>
   </details>
 
   <footer>写方案 · <a href="privacy.html">隐私政策</a></footer>
 </div>
 <script>
-  document.getElementById('copy').onclick = async function () {
-    var b = this, t = document.getElementById('cmd').textContent;
-    try { await navigator.clipboard.writeText(t); b.textContent = '已复制 ✓'; b.classList.add('done'); }
-    catch (e) {
-      var r = document.createRange(); r.selectNodeContents(document.getElementById('cmd'));
-      var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = '已选中，按 ⌘C 复制';
+  // 系统切换：按 userAgent 识别当前系统并默认选中（标注「本机」）；可手动切换，记在 localStorage 里
+  (function () {
+    var ua = navigator.userAgent || '', here = /Windows/i.test(ua) ? 'win' : (/Mac/i.test(ua) ? 'mac' : '');
+    var saved = null;
+    try { saved = localStorage.getItem('xfa-os'); } catch (e) {}
+    var tabs = document.querySelector('.tabs');
+    function pick(os, remember) {
+      document.documentElement.setAttribute('data-os', os);
+      tabs.querySelectorAll('[data-tab]').forEach(function (t) { t.setAttribute('aria-selected', String(t.getAttribute('data-tab') === os)); });
+      if (remember) { try { localStorage.setItem('xfa-os', os); } catch (e) {} }
     }
-    setTimeout(function () { b.textContent = '复制命令'; b.classList.remove('done'); }, 2000);
-  };
+    tabs.hidden = false;
+    if (here) { var h = tabs.querySelector('[data-here="' + here + '"]'); if (h) h.textContent = '（本机）'; }
+    pick(saved === 'mac' || saved === 'win' ? saved : (here || 'mac'), false);
+    tabs.addEventListener('click', function (e) { var t = e.target.closest('[data-tab]'); if (t) pick(t.getAttribute('data-tab'), true); });
+  })();
+  document.querySelectorAll('button.copy').forEach(function (b) {
+    b.onclick = async function () {
+      var el = document.getElementById(b.getAttribute('data-target')), t = el.textContent;
+      try { await navigator.clipboard.writeText(t); b.textContent = '已复制 ✓'; b.classList.add('done'); }
+      catch (e) {
+        var r = document.createRange(); r.selectNodeContents(el);
+        var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = '已选中，按 ' + b.getAttribute('data-key') + ' 复制';
+      }
+      setTimeout(function () { b.textContent = '复制命令'; b.classList.remove('done'); }, 2000);
+    };
+  });
 </script>
 </body>
 </html>
