@@ -83,7 +83,7 @@
 
 <header>
   <h1>「写方案」隐私政策</h1>
-  <p class="meta">适用于 Microsoft Edge 插件「写方案」及其配套本机服务　·　生效日期：2026-11-20（本次更新：新增 Windows 支持）</p>
+  <p class="meta">适用于 Microsoft Edge 插件「写方案」及其配套本机服务　·　生效日期：2026-11-27（本次更新：支持电子表格、图片分析和文档下载）</p>
   <nav class="lang"><a href="#zh">中文</a><a href="#en">English</a></nav>
 </header>
 
@@ -94,7 +94,7 @@
 </div>
 
 <h2>1. 插件是做什么的</h2>
-<p>「写方案」是一个 Microsoft Edge 浏览器插件。你在飞书 / Lark 网页文档中选中一段文字后，插件把这段文字和它所在文档的上下文交给你电脑上的 AI 命令行工具（Claude Code、Codex 或 WorkBuddy / CodeBuddy，三选一，由你在侧边栏选择），并在侧边栏显示可复制的修改建议。</p>
+<p>「写方案」是一个 Microsoft Edge 浏览器插件。你在飞书 / Lark 网页文档中选中一段文字后，插件把这段文字和它所在文档的上下文交给你电脑上的 AI 命令行工具（Claude Code、Codex 或 WorkBuddy / CodeBuddy，由你在侧边栏选择），并在侧边栏显示可复制的修改建议。</p>
 <p>插件由两部分组成：</p>
 <ul>
   <li><strong>浏览器插件</strong>：在 Edge 里运行，负责读取选区和显示结果。</li>
@@ -113,6 +113,9 @@
 </ul>
 <p>图片是在文档页面内、以你当前已登录的文档会话下载的，插件<strong>不会读取</strong>你的 Cookie、登录令牌或密码。</p>
 <p>插件<strong>不会读取</strong>：你的浏览历史、其他标签页、其他网站的内容、表单输入、键盘输入记录、位置信息。文档页面上的插件脚本只用来在你选中文字时显示一个浮动按钮，它监听的选区变化、滚动和 Esc 键只用于显示 / 隐藏按钮，不记录也不发送。</p>
+<p>当你把鼠标停在文档中的图片上并点「分析这张图」，或在电子表格页面选中单元格并触发插件时，插件读取的是：这张图片及其所在章节和前后文，或该工作表的名称、表头和选中区域的数据（最多 200 行 × 40 列）。</p>
+<p><strong>剪贴板：</strong>只有在电子表格页面读不到页面数据、且你主动点了「写方案：分析选中单元格」按钮时，插件才会读取你刚刚复制到剪贴板的单元格文本（制表符分隔）。它不会在后台或在你未操作时读取剪贴板，也不读取剪贴板中的其他内容（如密码、验证码）。</p>
+<p><strong>下载文档：</strong>当你点「⬇」并选择格式时，插件读取整篇文档的正文、表格和图片（最多 30 张），交给本机服务在你电脑上生成 Word 或 Markdown 文件。生成过程不联网。</p>
 
 <h2>3. 数据怎么使用、发往哪里</h2>
 <div class="table-wrap">
@@ -142,6 +145,7 @@
   <li><strong>本机服务日志</strong>：macOS 保存在 <code>~/Library/Logs/xiefangan-bridge.log</code>，Windows 保存在 <code>%LOCALAPPDATA%\XieFangAn\logs\bridge.log</code>，只记录请求时间、所用 AI 工具、文档编号和你输入要求的前 40 个字，以及连接检测的来源（请求方式、来源插件标识、是否通过校验），用于排查故障，不发送给任何人。</li>
   <li><strong>WorkBuddy 登录脚本</strong>：选用 WorkBuddy 且尚未登录时，本机服务会生成一个登录用的小脚本（macOS 在 <code>/tmp/xfa-login/</code>，Windows 在 <code>%TEMP%\xfa-login\</code>），只含启动登录的命令，不含账号信息。</li>
   <li><strong>AI 工具自己的记录</strong>：你所用的 AI 命令行工具可能按它自己的方式在你电脑上保存对话记录（用于追问续接），也可能由服务商按其政策保存。这部分请参考对应工具和服务商的说明。</li>
+  <li><strong>导出的文件</strong>：你用「下载」功能生成的 Word / Markdown 文件保存在电脑桌面（macOS 的 <code>~/Desktop</code>，Windows 的桌面），由你自行管理和删除，插件不会上传这些文件。</li>
 </ul>
 <p>开发者没有服务器，<strong>不会收到、也不保存</strong>你的任何文档内容或使用数据。</p>
 
@@ -200,7 +204,7 @@
 </div>
 
 <h2>1. What the extension does</h2>
-<p>"写方案" is a Microsoft Edge extension. When you select text in a Feishu / Lark web document, it passes the selection and its document context to an AI command-line tool on your computer (Claude Code, Codex, or WorkBuddy / CodeBuddy — you choose one in the side panel) and shows copy-ready rewrite suggestions in the side panel.</p>
+<p>"写方案" is a Microsoft Edge extension. When you select text in a Feishu / Lark web document, it passes the selection and its document context to an AI command-line tool on your computer (Claude Code, Codex, WorkBuddy / CodeBuddy — you choose one in the side panel) and shows copy-ready rewrite suggestions in the side panel.</p>
 <p>It has two parts:</p>
 <ul>
   <li><strong>The browser extension</strong>, which runs in Edge, reads the selection and displays results.</li>
@@ -219,6 +223,9 @@
 </ul>
 <p>Images are downloaded inside the document page using your existing document session. The extension does <strong>not</strong> read your cookies, sign-in tokens or passwords.</p>
 <p>The extension does <strong>not</strong> read your browsing history, other tabs, other websites, form inputs, keystrokes or location. The script on document pages only shows a floating button when you select text; the selection, scroll and Esc-key events it listens to are used only to show or hide that button and are neither recorded nor sent.</p>
+<p>When you hover an image in a document and click "分析这张图", or select cells on a spreadsheet page and trigger the extension, it reads that image together with its section and surrounding text, or the sheet name, header row and the selected range (up to 200 rows × 40 columns).</p>
+<p><strong>Clipboard:</strong> only on a spreadsheet page, only when the page's data model cannot be read, and only when you click the "写方案" button, the extension reads the cell text you just copied (tab-separated). It never reads the clipboard in the background or without your action, and does not read other clipboard content such as passwords or verification codes.</p>
+<p><strong>Downloading a document:</strong> when you click "⬇" and choose a format, the extension reads the whole document (text, tables and up to 30 images) and passes it to the local service to create a Word or Markdown file on your computer. This step makes no network request.</p>
 
 <h2>3. How the data is used and where it goes</h2>
 <div class="table-wrap">
@@ -248,6 +255,7 @@
   <li><strong>Local service log</strong>: <code>~/Library/Logs/xiefangan-bridge.log</code> on macOS, <code>%LOCALAPPDATA%\XieFangAn\logs\bridge.log</code> on Windows, recording only the request time, the AI tool used, the document ID, the first 40 characters of your instruction, and the source of connection checks (request method, the calling extension's ID, and whether it was accepted), for troubleshooting. It is not sent anywhere.</li>
   <li><strong>WorkBuddy login script</strong>: if you choose WorkBuddy and are not signed in, the service writes a small script (to <code>/tmp/xfa-login/</code> on macOS, <code>%TEMP%\xfa-login\</code> on Windows) that only launches the sign-in flow. It contains no account information.</li>
   <li><strong>The AI tool's own records</strong>: the AI command-line tool may keep conversation history on your computer in its own way (used for follow-ups), and the provider may retain data under its own policy. Refer to that tool's and provider's documentation.</li>
+  <li><strong>Exported files</strong>: Word / Markdown files created with the "Download" feature are saved to your Desktop (macOS <code>~/Desktop</code>, the Windows Desktop) and are yours to manage or delete. They are never uploaded by the extension.</li>
 </ul>
 <p>The developer has no server and does <strong>not receive or store</strong> any of your document content or usage data.</p>
 
