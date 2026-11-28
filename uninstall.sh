@@ -12,6 +12,10 @@ main() {
   echo "== 写方案 · 卸载本机服务 =="
   launchctl bootout "gui/$(id -u)/$LABEL" 2>/dev/null && echo "✓ 已停止后台服务 $LABEL" || echo "· 后台服务没在运行"
   rm -f "$PLIST" && echo "✓ 已删除 $PLIST"
+  # 「让它更懂你」的每日提炼定时任务（没开过就没有这一项）
+  DIGEST="${XFA_DIGEST_LABEL:-com.xiefangan.digest}"
+  launchctl bootout "gui/$(id -u)/$DIGEST" 2>/dev/null && echo "✓ 已停止每日提炼任务 $DIGEST" || echo "· 没有每日提炼任务"
+  rm -f "$HOME/Library/LaunchAgents/$DIGEST.plist"
   # 安装目录只删本服务自己的目录，防止环境变量写错误删别的
   case "$DEST" in
     */XieFangAn|*/XieFangAn/|*xiefangan*) rm -rf "$DEST" && echo "✓ 已删除 $DEST" ;;

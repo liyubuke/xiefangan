@@ -17,6 +17,8 @@ function Uninstall-XieFangAn {
         'procWarn=ISDor7vkuI3liLDov5vnqIvliJfooajvvIzmsqHog73lgZzmraLmnKzmnLrmnI3liqHvvJp7MH3jgILlpoLliKDpmaTlpLHotKXvvIzph43lkK/nlLXohJHlkI7lho3ov5DooYzkuIDmrKHljbjovb3lkb3ku6TjgII=',
         'vbsDel=4oiaIOW3suWIoOmZpOWQr+WKqOmhuSB7MH0=',
         'vbsNone=wrcg5rKh5pyJ5ZCv5Yqo6aG5IHswfQ==',
+        'taskDel=4oiaIOW3suWIoOmZpOavj+aXpeaPkOeCvOS7u+WKoSB7MH0=',
+        'taskNone=wrcg5rKh5pyJ5q+P5pel5o+Q54K85Lu75Yqh',
         'destDel=4oiaIOW3suWIoOmZpCB7MH0=',
         'destNone=wrcg5a6J6KOF55uu5b2V5LiN5a2Y5Zyo77yaezB9',
         'destSkip=ISDlronoo4Xnm67lvZXkuI3lg4/lhpnmlrnmoYjnmoTnm67lvZXvvIzmnKrliKDpmaTvvJp7MH0=',
@@ -68,6 +70,14 @@ function Uninstall-XieFangAn {
         } catch { Write-Host (T 'procWarn' $_.Exception.Message) -ForegroundColor Yellow }
 
         if (Test-Path -LiteralPath $VBS) { Remove-Item -LiteralPath $VBS -Force; Write-Host (T 'vbsDel' $VBS) } else { Write-Host (T 'vbsNone' $VBS) }
+
+        $TASK = $env:XFA_DIGEST_TASK
+        if (-not $TASK) { $TASK = 'XieFangAnDailyDigest' }
+        if ($TASK -match '^[A-Za-z0-9_.-]+$') {
+            $q = & schtasks /Query /TN $TASK 2>$null
+            if ($LASTEXITCODE -eq 0) { & schtasks /Delete /TN $TASK /F 2>$null | Out-Null; Write-Host (T 'taskDel' $TASK) }
+            else { Write-Host (T 'taskNone') }
+        }
 
         $leaf = Split-Path -Leaf $DEST
         if (-not (Test-Path -LiteralPath $DEST)) {

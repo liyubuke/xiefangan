@@ -83,7 +83,7 @@
 
 <header>
   <h1>「写方案」隐私政策</h1>
-  <p class="meta">适用于 Microsoft Edge 插件「写方案」及其配套本机服务　·　生效日期：2026-11-27（本次更新：支持电子表格、图片分析和文档下载）</p>
+  <p class="meta">适用于 Microsoft Edge 插件「写方案」及其配套本机服务　·　生效日期：2026-11-28（本次更新：新增本机历史记录）</p>
   <nav class="lang"><a href="#zh">中文</a><a href="#en">English</a></nav>
 </header>
 
@@ -139,11 +139,12 @@
 <h2>4. 数据存在哪里、存多久</h2>
 <ul>
   <li><strong>本机服务程序</strong>：安装命令把本机服务（一个 Node.js 脚本、规则文件和本机配置）放在 macOS 的 <code>~/Library/Application Support/XieFangAn/</code>，并注册为登录后自动运行的 launchd 服务（<code>~/Library/LaunchAgents/com.xiefangan.bridge.plist</code>）；在 Windows 上放在 <code>%LOCALAPPDATA%\XieFangAn\</code>，并在「启动」文件夹里放一个 <code>XieFangAn.vbs</code> 让它登录后自动在后台运行。卸载命令会把它们全部删除。</li>
-  <li><strong>浏览器本地存储（chrome.storage.local）</strong>：只保存两项偏好——你选的 AI 工具和每个工具选的模型。</li>
+  <li><strong>浏览器本地存储（chrome.storage.local）</strong>：保存你选的 AI 工具和模型、是否已同意交给本机 AI 处理、最近几次的处理用时（用来估算等待时间），以及<strong>历史记录</strong>——最近 30 次的文档标题、选中内容、你的要求和 AI 结果，方便你回看和接着追问。这些只存在你这台电脑的浏览器里，不会上传；可以在侧边栏「历史记录」里一键清空，卸载插件时浏览器也会一并删除。</li>
   <li><strong>浏览器会话存储（chrome.storage.session）</strong>：刚读取到的选区内容会短暂放在这里，交给侧边栏后立即清除；关闭浏览器时也会自动清除。</li>
   <li><strong>本机临时图片</strong>：macOS 保存在 <code>/tmp/xiefangan/</code>，Windows 保存在 <code>%TEMP%\xiefangan\</code>（都按文档分文件夹）。macOS 会定期或在重启时清理；Windows 可用系统的「磁盘清理」清除。你也可以随时手动删除。</li>
   <li><strong>本机服务日志</strong>：macOS 保存在 <code>~/Library/Logs/xiefangan-bridge.log</code>，Windows 保存在 <code>%LOCALAPPDATA%\XieFangAn\logs\bridge.log</code>，只记录请求时间、所用 AI 工具、文档编号和你输入要求的前 40 个字，以及连接检测的来源（请求方式、来源插件标识、是否通过校验），用于排查故障，不发送给任何人。</li>
   <li><strong>WorkBuddy 登录脚本</strong>：选用 WorkBuddy 且尚未登录时，本机服务会生成一个登录用的小脚本（macOS 在 <code>/tmp/xfa-login/</code>，Windows 在 <code>%TEMP%\xfa-login\</code>），只含启动登录的命令，不含账号信息。</li>
+  <li><strong>每日提炼（可选，默认关闭）</strong>：你在侧边栏「让它更懂你」里点「开启」后，安装程序会在 macOS 注册一个每天 03:00 运行的 launchd 任务（<code>~/Library/LaunchAgents/com.xiefangan.digest.plist</code>，脚本和提示词在 <code>~/Library/Application Support/XieFangAn/digest/</code>），在 Windows 注册一个同样时间的计划任务（<code>XieFangAnDailyDigest</code>，脚本在 <code>%LOCALAPPDATA%\XieFangAn\digest\</code>）。它只做一件事：调用<strong>你自己电脑上已登录的 AI 命令行工具</strong>，把你本机新增的材料整理成笔记存进该工具自己的记忆目录，并在同目录的 <code>digest.log</code> 里记一行运行结果。开发者收不到其中任何内容。在侧边栏点「关闭」，或运行卸载命令，就会删除这个定时任务和上述文件。</li>
   <li><strong>AI 工具自己的记录</strong>：你所用的 AI 命令行工具可能按它自己的方式在你电脑上保存对话记录（用于追问续接），也可能由服务商按其政策保存。这部分请参考对应工具和服务商的说明。</li>
   <li><strong>导出的文件</strong>：你用「下载」功能生成的 Word / Markdown 文件保存在电脑桌面（macOS 的 <code>~/Desktop</code>，Windows 的桌面），由你自行管理和删除，插件不会上传这些文件。</li>
 </ul>
@@ -197,7 +198,7 @@
 <section id="en" lang="en">
 
 <h1>Privacy Policy — 写方案</h1>
-<p class="meta">Applies to the Microsoft Edge extension "写方案" and its companion local service · Effective date: 2026-11-20 (this update: Windows support added)</p>
+<p class="meta">Applies to the Microsoft Edge extension "写方案" and its companion local service · Effective date: 2026-11-28 (this update: local history added)</p>
 
 <div class="note">
   <strong>In short:</strong> the extension reads the document content you select only when you trigger it, and sends it only to a companion service on your own computer (127.0.0.1). That service runs the AI command-line tool you installed and signed in to, and that tool sends the content to the AI provider you chose. The extension has no server of its own, does no analytics, never sells data, and never modifies your documents.
@@ -249,11 +250,12 @@
 <h2>4. Where data is stored and for how long</h2>
 <ul>
   <li><strong>The companion service itself</strong>: the install command places the service (a Node.js script, a rules file and local settings) in <code>~/Library/Application Support/XieFangAn/</code> on macOS and registers it as a launchd agent that starts at login (<code>~/Library/LaunchAgents/com.xiefangan.bridge.plist</code>). On Windows it is placed in <code>%LOCALAPPDATA%\XieFangAn\</code>, and a <code>XieFangAn.vbs</code> file in your Startup folder runs it in the background at sign-in. The uninstall command removes all of these.</li>
-  <li><strong>Browser local storage (chrome.storage.local)</strong>: only two preferences — the AI tool you chose and the model chosen for each tool.</li>
+  <li><strong>Browser local storage (chrome.storage.local)</strong>: the AI tool and model you chose, whether you have agreed to send content to your local AI tool, recent processing times (used to estimate waiting time), and your <strong>history</strong> — the document title, selected content, your instruction and the AI result for the last 30 requests, so you can review them and continue the conversation. All of this stays in this browser on your computer and is never uploaded. You can clear the history with one click in the side panel's History view; the browser also deletes it when the extension is removed.</li>
   <li><strong>Browser session storage (chrome.storage.session)</strong>: the just-captured selection is held here briefly and cleared as soon as the side panel receives it; the browser also clears it when it closes.</li>
   <li><strong>Temporary images on your computer</strong>: under <code>/tmp/xiefangan/</code> on macOS and <code>%TEMP%\xiefangan\</code> on Windows (one folder per document). macOS cleans this periodically or on restart; on Windows, Disk Cleanup can clear it. You can delete it at any time.</li>
   <li><strong>Local service log</strong>: <code>~/Library/Logs/xiefangan-bridge.log</code> on macOS, <code>%LOCALAPPDATA%\XieFangAn\logs\bridge.log</code> on Windows, recording only the request time, the AI tool used, the document ID, the first 40 characters of your instruction, and the source of connection checks (request method, the calling extension's ID, and whether it was accepted), for troubleshooting. It is not sent anywhere.</li>
   <li><strong>WorkBuddy login script</strong>: if you choose WorkBuddy and are not signed in, the service writes a small script (to <code>/tmp/xfa-login/</code> on macOS, <code>%TEMP%\xfa-login\</code> on Windows) that only launches the sign-in flow. It contains no account information.</li>
+  <li><strong>Daily digest (optional, off by default)</strong>: if you turn it on under "Make it know you better" in the side panel, the service registers a task that runs at 03:00 each day — a launchd agent on macOS (<code>~/Library/LaunchAgents/com.xiefangan.digest.plist</code>, with the script and prompt in <code>~/Library/Application Support/XieFangAn/digest/</code>) or a scheduled task on Windows (<code>XieFangAnDailyDigest</code>, script in <code>%LOCALAPPDATA%\XieFangAn\digest\</code>). It does one thing: it calls <strong>the AI command-line tool you already installed and signed in to</strong>, which reviews newly added material on your computer and keeps notes in its own memory directory, writing one result line to <code>digest.log</code> in the same folder. The developer receives none of this. Turning the switch off, or running the uninstall command, deletes the task and those files.</li>
   <li><strong>The AI tool's own records</strong>: the AI command-line tool may keep conversation history on your computer in its own way (used for follow-ups), and the provider may retain data under its own policy. Refer to that tool's and provider's documentation.</li>
   <li><strong>Exported files</strong>: Word / Markdown files created with the "Download" feature are saved to your Desktop (macOS <code>~/Desktop</code>, the Windows Desktop) and are yours to manage or delete. They are never uploaded by the extension.</li>
 </ul>

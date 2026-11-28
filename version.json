@@ -1,0 +1,10 @@
+{
+  "extension": "1.5.4",
+  "bridge": "1.5.3",
+  "notes": "1.5.4 更新：新增「让它更懂你」。一是每天自动提炼，开启后你电脑上的 AI 助手会在每天凌晨把新增的材料整理进自己的记忆，以后写方案时自动带上你的背景和口径；二是接入录音 App，装好读录音的组件后，会议纪要和原话也能一起进记忆。两项都默认关闭，全部在本机运行，不上传任何内容，随时可以关掉。",
+  "storeUrl": "https://microsoftedge.microsoft.com/addons/detail/jjnopgdhcpnbmpoefhfolbhgdfpmgklc",
+  "site": "https://liyubuke.github.io/xiefangan",
+  "installCmd": "curl -fsSL https://liyubuke.github.io/xiefangan/install.sh | bash",
+  "installCmdWin": "irm https://liyubuke.github.io/xiefangan/install.ps1 | iex",
+  "publishedAt": "2026-11-28"
+}
